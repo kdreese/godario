@@ -15,6 +15,7 @@ const JUMP_SPEED_SCALING = 0.25
 
 var velocity := Vector2.ZERO
 var is_jumping := false
+var is_flipped := false
 
 
 func _physics_process(delta: float) -> void:
@@ -37,6 +38,9 @@ func _physics_process(delta: float) -> void:
 			velocity.x = min(velocity.x, MAX_RUN_SPEED)
 		else:
 			velocity.x = max(velocity.x, -MAX_RUN_SPEED)
+		if (wishdir > 0) == is_flipped:
+			is_flipped = not is_flipped
+			scale.x *= -1
 
 	velocity.y += GRAVITY * delta
 
