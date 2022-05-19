@@ -1,0 +1,20 @@
+[gd_scene format=2]
+
+[node name="DebugLevel" type="Node"]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2( 512, 480 )
+collision_layer = 2
+collision_mask = 0
+
+[node name="Collision" type="CollisionPolygon2D" parent="Floor"]
+polygon = PoolVector2Array( -384, -32, -384, 32, 384, 32, 384, -32 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="Floor"]
+polygon = PoolVector2Array( -384, -32, -384, 32, 384, 32, 384, -32 )
+
+[node name="PlayerSpawn" type="Position2D" parent="."]
+position = Vector2( 288, 320 )
