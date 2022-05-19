@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/godario_tilemap.png-c9817e063f2d0a4e57e1bcb913f20da6.stex"
+path="res://.import/godario_tileset.png-46fb590535b934dbfd157e888428e516.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/godario_tilemap.png"
-dest_files=[ "res://.import/godario_tilemap.png-c9817e063f2d0a4e57e1bcb913f20da6.stex" ]
+source_file="res://assets/godario_tileset.png"
+dest_files=[ "res://.import/godario_tileset.png-46fb590535b934dbfd157e888428e516.stex" ]
 
 [params]
 
