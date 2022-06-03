@@ -11,6 +11,7 @@ const SLOWDOWN_ACCEL = 1500
 
 const JUMP_POWER = 500
 const JUMP_SPEED_SCALING = 0.25
+const BOUNCE_POWER = 250
 
 
 var velocity := Vector2.ZERO
@@ -56,3 +57,10 @@ func _physics_process(delta: float) -> void:
 		is_jumping = true
 
 	velocity = move_and_slide(velocity, Vector2.UP, true)
+
+
+func bounce():
+	if Input.is_action_pressed("ui_up"):
+		velocity.y = -JUMP_POWER
+	else:
+		velocity.y = -BOUNCE_POWER
