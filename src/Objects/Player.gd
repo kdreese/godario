@@ -26,7 +26,7 @@ var time_on_ground := 0.0
 
 
 func _physics_process(delta: float) -> void:
-	var wishdir = Input.get_axis("ui_left", "ui_right")
+	var wishdir = Input.get_axis("game_left", "game_right")
 
 	if wishdir == 0:
 		var friction_accel := GROUND_FRICTION_ACCEL if is_on_floor() else AIR_FRICTION_ACCEL
@@ -54,7 +54,7 @@ func _physics_process(delta: float) -> void:
 	if velocity.y >= 0:
 		is_jumping = false
 
-	if is_jumping and Input.is_action_just_released("ui_up"):
+	if is_jumping and Input.is_action_just_released("game_jump"):
 		is_jumping = false
 		velocity.y *= 0.4
 
@@ -62,7 +62,7 @@ func _physics_process(delta: float) -> void:
 		time_on_ground += delta
 		if time_on_ground > CONSECUTIVE_JUMP_WINDOW:
 			num_jumps = 0
-		if Input.is_action_just_pressed("ui_up"):
+		if Input.is_action_just_pressed("game_jump"):
 			var jump_power := JUMP_POWER
 			num_jumps += 1
 			if num_jumps == 2:
