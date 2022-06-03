@@ -14,5 +14,7 @@ func _ready() -> void:
 	player.position = player_spawn.position
 	player_spawn.queue_free()
 
+	$GameCamera.player = player
+
 	add_child(level)
 	add_child(player)
