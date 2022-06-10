@@ -13,6 +13,7 @@ const JUMP_POWER = 500
 const DOUBLE_JUMP_POWER = 600
 const TRIPLE_JUMP_POWER = 700
 const JUMP_SPEED_SCALING = 0.25
+const BOUNCE_POWER = 250
 
 const CONSECUTIVE_JUMP_WINDOW = 0.25 # Seconds between landing on the ground and losing your n-jump counter
 const TRIPLE_JUMP_SPEED_THRESHOLD = 300
@@ -78,3 +79,10 @@ func _physics_process(delta: float) -> void:
 			time_on_ground = 0
 
 	velocity = move_and_slide(velocity, Vector2.UP, true)
+
+
+func bounce():
+	if Input.is_action_pressed("ui_up"):
+		velocity.y = -JUMP_POWER
+	else:
+		velocity.y = -BOUNCE_POWER
