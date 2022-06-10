@@ -21,6 +21,9 @@ const JUMP_BUFFER_WINDOW = 0.1 # Seconds after pressing jump that you'll still j
 const TRIPLE_JUMP_SPEED_THRESHOLD = 300
 
 
+onready var animation_player := $AnimationPlayer as AnimationPlayer
+
+
 var velocity := Vector2.ZERO
 var is_jumping := false
 var is_flipped := false
@@ -108,17 +111,17 @@ func bounce():
 
 func jump():
 	var jump_power := JUMP_POWER
-	$AnimationPlayer.play("Jump")
+	animation_player.play("Jump")
 	num_jumps += 1
 	if num_jumps == 2:
 		jump_power = DOUBLE_JUMP_POWER
-		$AnimationPlayer.play("Double Jump")
+		animation_player.play("Double Jump")
 	elif num_jumps == 3:
 		if abs(velocity.x) < TRIPLE_JUMP_SPEED_THRESHOLD:
 			num_jumps = 1
 		else:
 			jump_power = TRIPLE_JUMP_POWER
 			num_jumps = 0
-			$AnimationPlayer.play("Triple Jump")
+			animation_player.play("Triple Jump")
 	velocity.y = -(jump_power + abs(velocity.x) * JUMP_SPEED_SCALING)
 	is_jumping = true
