@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/godario_tileset.png-46fb590535b934dbfd157e888428e516.stex"
+path="res://.import/atcoin.png-da48b9e5d54d0c4919704026897ad65a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/godario_tileset.png"
-dest_files=[ "res://.import/godario_tileset.png-46fb590535b934dbfd157e888428e516.stex" ]
+source_file="res://assets/atcoin.png"
+dest_files=[ "res://.import/atcoin.png-da48b9e5d54d0c4919704026897ad65a.stex" ]
 
 [params]
 

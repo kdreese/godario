@@ -125,3 +125,8 @@ func jump():
 			animation_player.play("Triple Jump")
 	velocity.y = -(jump_power + abs(velocity.x) * JUMP_SPEED_SCALING)
 	is_jumping = true
+
+
+func collect_coin() -> void:
+	# TODO
+	print("Got coin")
