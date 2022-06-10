@@ -16,14 +16,19 @@ const JUMP_SPEED_SCALING = 0.25
 const BOUNCE_POWER = 250
 
 const CONSECUTIVE_JUMP_WINDOW = 0.25 # Seconds between landing on the ground and losing your n-jump counter
+const COYOTE_TIME_WINDOW = 0.1 # Seconds after leaving that ground where you can still jump
+const JUMP_BUFFER_WINDOW = 0.1 # Seconds after pressing jump that you'll still jump upon reaching the ground
 const TRIPLE_JUMP_SPEED_THRESHOLD = 300
 
 
 var velocity := Vector2.ZERO
 var is_jumping := false
 var is_flipped := false
+var is_attempting_jump := false
 var num_jumps := 0
 var time_on_ground := 0.0
+var time_in_air := 0.0
+var time_til_ground := 0.0
 
 
 func _physics_process(delta: float) -> void:
@@ -69,26 +74,27 @@ func _physics_process(delta: float) -> void:
 		velocity.y *= 0.4
 
 	if is_on_floor():
+		time_in_air = 0
 		time_on_ground += delta
 		if time_on_ground > CONSECUTIVE_JUMP_WINDOW:
 			num_jumps = 0
+		if is_attempting_jump and time_til_ground < JUMP_BUFFER_WINDOW:
+			jump()
+		else:
+			is_attempting_jump = false
 		if Input.is_action_just_pressed("game_jump"):
-			var jump_power := JUMP_POWER
-			$AnimationPlayer.play("Jump")
-			num_jumps += 1
-			if num_jumps == 2:
-				jump_power = DOUBLE_JUMP_POWER
-				$AnimationPlayer.play("Double Jump")
-			elif num_jumps == 3:
-				if abs(velocity.x) < TRIPLE_JUMP_SPEED_THRESHOLD:
-					num_jumps = 1
-				else:
-					jump_power = TRIPLE_JUMP_POWER
-					num_jumps = 0
-					$AnimationPlayer.play("Triple Jump")
-			velocity.y = -(jump_power + abs(velocity.x) * JUMP_SPEED_SCALING)
-			is_jumping = true
-			time_on_ground = 0
+			jump()
+	else:
+		time_on_ground = 0
+		time_in_air += delta
+		if is_attempting_jump:
+			time_til_ground += delta
+		if Input.is_action_just_pressed("game_jump"):
+			if time_in_air < COYOTE_TIME_WINDOW:
+				jump()
+			else:
+				is_attempting_jump = true
+				time_til_ground = 0
 
 	velocity = move_and_slide(velocity, Vector2.UP, true)
 
@@ -98,3 +104,20 @@ func bounce():
 		velocity.y = -JUMP_POWER
 	else:
 		velocity.y = -BOUNCE_POWER
+
+func jump():
+	var jump_power := JUMP_POWER
+	$AnimationPlayer.play("Jump")
+	num_jumps += 1
+	if num_jumps == 2:
+		jump_power = DOUBLE_JUMP_POWER
+		$AnimationPlayer.play("Double Jump")
+	elif num_jumps == 3:
+		if abs(velocity.x) < TRIPLE_JUMP_SPEED_THRESHOLD:
+			num_jumps = 1
+		else:
+			jump_power = TRIPLE_JUMP_POWER
+			num_jumps = 0
+			$AnimationPlayer.play("Triple Jump")
+	velocity.y = -(jump_power + abs(velocity.x) * JUMP_SPEED_SCALING)
+	is_jumping = true
