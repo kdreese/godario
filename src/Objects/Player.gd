@@ -82,8 +82,8 @@ func _physics_process(delta: float) -> void:
 			jump()
 		else:
 			is_attempting_jump = false
-		if Input.is_action_just_pressed("game_jump"):
-			jump()
+			if Input.is_action_just_pressed("game_jump"):
+				jump()
 	else:
 		time_on_ground = 0
 		time_in_air += delta
@@ -104,6 +104,7 @@ func bounce():
 		velocity.y = -JUMP_POWER
 	else:
 		velocity.y = -BOUNCE_POWER
+
 
 func jump():
 	var jump_power := JUMP_POWER
