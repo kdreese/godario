@@ -29,7 +29,16 @@ var time_on_ground := 0.0
 func _physics_process(delta: float) -> void:
 	var wishdir = Input.get_axis("game_left", "game_right")
 
-	if wishdir == 0:
+	var target_velocity = MAX_RUN_SPEED * wishdir
+	var too_fast = false
+	if target_velocity > 0:
+		too_fast = velocity.x > target_velocity
+	elif target_velocity < 0:
+		too_fast = velocity.x < target_velocity
+	else: # target_velocity == 0:
+		too_fast = true
+
+	if too_fast:
 		var friction_accel := GROUND_FRICTION_ACCEL if is_on_floor() else AIR_FRICTION_ACCEL
 		if velocity.x > 0:
 			velocity.x -= friction_accel * delta
@@ -43,9 +52,9 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity.x += wishdir * RUN_ACCEL * delta
 		if wishdir > 0:
-			velocity.x = min(velocity.x, MAX_RUN_SPEED)
+			velocity.x = min(velocity.x, target_velocity)
 		else:
-			velocity.x = max(velocity.x, -MAX_RUN_SPEED)
+			velocity.x = max(velocity.x, target_velocity)
 		if (wishdir > 0) == is_flipped:
 			is_flipped = not is_flipped
 			scale.x *= -1
@@ -65,15 +74,18 @@ func _physics_process(delta: float) -> void:
 			num_jumps = 0
 		if Input.is_action_just_pressed("game_jump"):
 			var jump_power := JUMP_POWER
+			$AnimationPlayer.play("Jump")
 			num_jumps += 1
 			if num_jumps == 2:
 				jump_power = DOUBLE_JUMP_POWER
+				$AnimationPlayer.play("Double Jump")
 			elif num_jumps == 3:
 				if abs(velocity.x) < TRIPLE_JUMP_SPEED_THRESHOLD:
 					num_jumps = 1
 				else:
 					jump_power = TRIPLE_JUMP_POWER
 					num_jumps = 0
+					$AnimationPlayer.play("Triple Jump")
 			velocity.y = -(jump_power + abs(velocity.x) * JUMP_SPEED_SCALING)
 			is_jumping = true
 			time_on_ground = 0
