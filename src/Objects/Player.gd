@@ -93,7 +93,7 @@ func _physics_process(delta: float) -> void:
 		if is_attempting_jump:
 			time_til_ground += delta
 		if Input.is_action_just_pressed("game_jump"):
-			if time_in_air < COYOTE_TIME_WINDOW:
+			if time_in_air < COYOTE_TIME_WINDOW and not is_jumping:
 				jump()
 			else:
 				is_attempting_jump = true
@@ -103,7 +103,7 @@ func _physics_process(delta: float) -> void:
 
 
 func bounce():
-	if Input.is_action_pressed("ui_up"):
+	if Input.is_action_pressed("game_jump"):
 		velocity.y = -JUMP_POWER
 	else:
 		velocity.y = -BOUNCE_POWER
