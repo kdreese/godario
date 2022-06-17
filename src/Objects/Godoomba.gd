@@ -35,4 +35,4 @@ func _on_GodoombaHitHurtBox_body_entered(body: Node) -> void:
 		body.bounce()
 		queue_free()
 	else:
-		pass # player hurt
+		body.damage_from_enemy()
