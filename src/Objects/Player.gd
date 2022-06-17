@@ -1,6 +1,9 @@
 extends KinematicBody2D
 
 
+signal coin_collected
+
+
 const GRAVITY = 1000
 
 const MAX_RUN_SPEED = 400
@@ -102,7 +105,7 @@ func _physics_process(delta: float) -> void:
 		if is_attempting_jump:
 			time_til_ground += delta
 		if Input.is_action_just_pressed("game_jump"):
-			if time_in_air < COYOTE_TIME_WINDOW:
+			if time_in_air < COYOTE_TIME_WINDOW and not is_jumping:
 				jump()
 			else:
 				is_attempting_jump = true
@@ -112,7 +115,7 @@ func _physics_process(delta: float) -> void:
 
 
 func bounce():
-	if Input.is_action_pressed("ui_up"):
+	if Input.is_action_pressed("game_jump"):
 		velocity.y = -JUMP_POWER
 	else:
 		velocity.y = -BOUNCE_POWER
@@ -136,10 +139,14 @@ func jump():
 	is_jumping = true
 
 
+func collect_coin() -> void:
+	emit_signal("coin_collected")
+
+
 func damage_from_enemy():
 	health -= 1
 	hurt_force()
-	$AnimationPlayer.play("Hurt")
+	animation_player.play("Hurt")
 	if health <= 0:
 		die()
 

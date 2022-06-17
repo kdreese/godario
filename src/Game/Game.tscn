@@ -11,3 +11,12 @@ level_scene = ExtResource( 2 )
 [node name="GameCamera" type="Camera2D" parent="."]
 current = true
 script = ExtResource( 3 )
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="CoinCount" type="Label" parent="UI"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 113.0
+margin_bottom = 24.0
+text = "Coins: %d"
