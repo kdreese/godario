@@ -1,6 +1,9 @@
 extends KinematicBody2D
 
 
+signal coin_collected
+
+
 const GRAVITY = 1000
 
 const MAX_RUN_SPEED = 400
@@ -128,5 +131,4 @@ func jump():
 
 
 func collect_coin() -> void:
-	# TODO
-	print("Got coin")
+	emit_signal("coin_collected")
