@@ -11,6 +11,8 @@ const RUN_ACCEL = 1000
 const GROUND_FRICTION_ACCEL = 800
 const AIR_FRICTION_ACCEL = 100
 const SLOWDOWN_ACCEL = 1500
+const DAMAGE_BOUNCE_FORCE = Vector2(-300, -400)
+const BOPPAGE_STUN = 0.3
 
 const JUMP_POWER = 500
 const DOUBLE_JUMP_POWER = 600
@@ -36,9 +38,16 @@ var time_on_ground := 0.0
 var time_in_air := 0.0
 var time_til_ground := 0.0
 
+var health := 3
+var time_since_bopped := 0.0
+
 
 func _physics_process(delta: float) -> void:
-	var wishdir = Input.get_axis("game_left", "game_right")
+	var wishdir = 0
+	if time_since_bopped > 0:
+		time_since_bopped -= delta
+	else:
+		wishdir = Input.get_axis("game_left", "game_right")
 
 	var target_velocity = MAX_RUN_SPEED * wishdir
 	var too_fast = false
@@ -132,3 +141,25 @@ func jump():
 
 func collect_coin() -> void:
 	emit_signal("coin_collected")
+
+
+func damage_from_enemy():
+	health -= 1
+	hurt_force()
+	animation_player.play("Hurt")
+	if health <= 0:
+		die()
+
+
+func hurt_force():
+	if velocity.x > 0 or (velocity.x == 0 and not is_flipped):
+		velocity = DAMAGE_BOUNCE_FORCE
+	else:
+		velocity.x = -DAMAGE_BOUNCE_FORCE.x
+		velocity.y = DAMAGE_BOUNCE_FORCE.y
+	time_since_bopped = BOPPAGE_STUN
+
+
+func die():
+	var error := get_tree().reload_current_scene()
+	assert(not error)
