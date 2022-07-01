@@ -13,6 +13,7 @@ const AIR_FRICTION_ACCEL = 100
 const SLOWDOWN_ACCEL = 1500
 const DAMAGE_BOUNCE_FORCE = Vector2(-300, -400)
 const BOPPAGE_STUN = 0.3
+const DEATH_PLANE_HEIGHT = 40
 
 const JUMP_POWER = 500
 const DOUBLE_JUMP_POWER = 600
@@ -43,6 +44,9 @@ var time_since_bopped := 0.0
 
 
 func _physics_process(delta: float) -> void:
+	if position.y > DEATH_PLANE_HEIGHT:
+		die()
+		return
 	var wishdir = 0
 	if time_since_bopped > 0:
 		time_since_bopped -= delta
