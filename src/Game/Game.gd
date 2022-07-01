@@ -1,8 +1,6 @@
 extends Node
 
 
-export (PackedScene) var level_scene: PackedScene
-
 onready var coin_count := $UI/CoinCount as Label
 onready var coin_count_template := coin_count.text
 
@@ -10,7 +8,7 @@ var player: KinematicBody2D
 
 
 func _ready() -> void:
-	var level := level_scene.instance()
+	var level := load(Global.game_state.level_scene_path).instance() as Node2D
 
 	var player_spawn: Position2D = level.get_node("PlayerSpawn")
 	player = preload("res://src/Objects/Player.tscn").instance()
